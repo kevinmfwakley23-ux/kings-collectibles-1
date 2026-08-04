@@ -2,10 +2,10 @@
   "name": "kings-collectibles",
   "version": "0.1.0",
   "private": true,
-  "packageManager": "pnpm@11.20.0",
-  "description": "K.I.N.G.S. - Collector's Kingdom",
-  "license": "UNLICENSED",
+  "description": "K.I.N.G.S. — Collector's Kingdom",
   "author": "WKW Jr.",
+  "license": "UNLICENSED",
+  "packageManager": "pnpm@11.20.0",
   "engines": {
     "node": ">=22.0.0",
     "pnpm": ">=11.20.0"
@@ -16,6 +16,13 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
-    "clean": "turbo run clean"
+    "clean": "turbo run clean",
+    "format": "prettier --write ."
+  },
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "prettier": "^3.6.2",
+    "turbo": "^2.5.6",
+    "typescript": "^5.9.2"
   }
 }

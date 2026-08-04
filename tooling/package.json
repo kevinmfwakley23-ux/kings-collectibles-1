@@ -1,0 +1,7 @@
+{
+  "name": "@kings/tooling",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Shared tooling configuration for K.I.N.G.S.",
+  "license": "UNLICENSED"
+}
