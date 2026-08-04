@@ -1,0 +1,38 @@
+# Dependencies
+node_modules/
+
+# Build Output
+dist/
+build/
+.next/
+
+# Logs
+*.log
+
+# Environment Files
+.env
+.env.local
+
+# Package Manager
+.pnpm-store/
+
+# Turbo
+.turbo/
+
+# TypeScript
+*.tsbuildinfo
+
+# Operating System
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Coverage
+coverage/
+
+# Temporary Files
+tmp/
+temp/
