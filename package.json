@@ -1,0 +1,21 @@
+{
+  "name": "kings-collectibles",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.20.0",
+  "description": "K.I.N.G.S. - Collector's Kingdom",
+  "license": "UNLICENSED",
+  "author": "WKW Jr.",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=11.20.0"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "clean": "turbo run clean"
+  }
+}
