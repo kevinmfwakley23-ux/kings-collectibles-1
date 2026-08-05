@@ -25,6 +25,9 @@ importers:
       '@kings/core':
         specifier: workspace:*
         version: link:../../packages/core
+      '@kings/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@kings/keeper':
         specifier: workspace:*
         version: link:../../packages/keeper
@@ -69,7 +72,11 @@ importers:
 
   packages/core: {}
 
-  packages/database: {}
+  packages/database:
+    dependencies:
+      '@kings/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/keeper: {}
 

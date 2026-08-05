@@ -4,13 +4,16 @@ import {
   createContext,
   ReactNode,
   useContext,
+  useMemo,
   useState,
 } from "react";
-
+import { database } from "@kings/database";
 import {
   CollectibleItem,
   VaultService,
 } from "@kings/core";
+
+import { InMemoryVaultRepository } from "@kings/database";
 
 import {
   defaultKeeperState,
@@ -30,20 +33,36 @@ type KingdomContextValue = {
     item: CollectibleItem | null
   ) => void;
 
+  activeCollection: string;
+
+  setActiveCollection: (
+    collection: string
+  ) => void;
+
   refresh: () => void;
 };
 
-const vault = new VaultService();
-
 const KingdomContext =
-  createContext<KingdomContextValue | null>(null);
+  createContext<KingdomContextValue | null>(
+    null
+  );
 
 export function KingdomProvider({
   children,
 }: {
   children: ReactNode;
 }) {
-  const [, setVersion] = useState(0);
+  const [version, setVersion] = useState(0);
+
+  const repository = useMemo(
+    () => database.vault,
+    []
+  );
+
+  const vault = useMemo(
+    () => new VaultService(repository),
+    [repository]
+  );
 
   const [keeper, setKeeper] =
     useState(defaultKeeperState);
@@ -51,8 +70,13 @@ export function KingdomProvider({
   const [selectedItem, setSelectedItem] =
     useState<CollectibleItem | null>(null);
 
+  const [activeCollection, setActiveCollection] =
+    useState("All");
+
   const refresh = () =>
     setVersion((v) => v + 1);
+
+  void version;
 
   return (
     <KingdomContext.Provider
@@ -62,6 +86,8 @@ export function KingdomProvider({
         setKeeper,
         selectedItem,
         setSelectedItem,
+        activeCollection,
+        setActiveCollection,
         refresh,
       }}
     >

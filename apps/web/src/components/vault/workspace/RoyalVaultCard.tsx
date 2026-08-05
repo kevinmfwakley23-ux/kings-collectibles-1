@@ -2,6 +2,8 @@
 
 import { CollectibleItem } from "@kings/core";
 
+import { CollectibleBadges } from "./CollectibleBadges";
+
 type Props = {
   item: CollectibleItem;
   selected: boolean;
@@ -16,36 +18,43 @@ export function RoyalVaultCard({
   return (
     <button
       onClick={onSelect}
-      className={`rounded-xl border p-4 text-left transition-all duration-200 ${
+      className={`rounded-xl border p-4 text-left transition ${
         selected
-          ? "border-amber-400 bg-amber-500/10 ring-2 ring-amber-400/30"
+          ? "border-amber-400 bg-amber-500/10"
           : "border-amber-500/20 bg-stone-800 hover:border-amber-400"
       }`}
     >
-      <div className="aspect-square rounded-lg bg-stone-900 mb-4 flex items-center justify-center">
-        <span className="text-sm muted-text">
-          Image
-        </span>
+      <div className="mb-4 flex aspect-square items-center justify-center rounded-lg bg-stone-900">
+        IMAGE
       </div>
 
       <h3 className="font-semibold text-white">
         {item.title}
       </h3>
 
-      <p className="mt-2 text-sm muted-text">
-        {item.category}
-      </p>
+      <div className="mt-2 text-sm muted-text">
+        {item.brand}
+      </div>
 
-      <div className="mt-4 flex justify-between">
+      <div className="text-sm muted-text">
+        {item.set}
+      </div>
+
+      <CollectibleBadges
+        rookie={item.rookie}
+        autograph={item.autograph}
+        memorabilia={item.memorabilia}
+        favorite={item.favorite}
+      />
+
+      <div className="mt-5 flex justify-between">
         <span className="gold-text">
           ${item.estimatedValue.toLocaleString()}
         </span>
 
-        {selected && (
-          <span className="text-xs uppercase tracking-widest text-amber-300">
-            Selected
-          </span>
-        )}
+        <span className="rounded-md bg-stone-900 px-2 py-1 text-xs">
+          {item.grade || "RAW"}
+        </span>
       </div>
     </button>
   );

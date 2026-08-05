@@ -1,5 +1,7 @@
 "use client";
 
+import { useMemo } from "react";
+
 import { useKingdom } from "@/src/context/KingdomContext";
 
 import { RoyalVaultCard } from "./RoyalVaultCard";
@@ -11,9 +13,20 @@ export function VaultGrid() {
     selectedItem,
     setSelectedItem,
     setKeeper,
+    activeCollection,
   } = useKingdom();
 
-  const items = vault.getItems();
+  const items = useMemo(() => {
+    const all = vault.getItems();
+
+    if (activeCollection === "All") {
+      return all;
+    }
+
+    return all.filter(
+      (item) => item.category === activeCollection
+    );
+  }, [vault, activeCollection]);
 
   if (items.length === 0) {
     return <RoyalVaultEmpty />;
@@ -22,13 +35,15 @@ export function VaultGrid() {
   return (
     <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h2 className="text-xl font-semibold gold-text">
-          Royal Vault
-        </h2>
+        <div>
+          <h2 className="text-xl font-semibold gold-text">
+            {activeCollection}
+          </h2>
 
-        <span className="rounded-lg border border-amber-500/20 px-3 py-1 text-sm muted-text">
-          {items.length} Collectibles
-        </span>
+          <p className="mt-1 text-sm muted-text">
+            {items.length} collectible{items.length !== 1 ? "s" : ""}
+          </p>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

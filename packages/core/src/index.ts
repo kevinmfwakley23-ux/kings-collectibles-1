@@ -3,6 +3,7 @@ export * from "./collection";
 export * from "./collection-repository";
 export * from "./item";
 export * from "./navigation";
+export * from "./repository";
 export * from "./routes";
+export * from "./services";
 export * from "./vault";
-export * from "./vault-service";

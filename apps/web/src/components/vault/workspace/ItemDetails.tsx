@@ -1,105 +1,121 @@
 "use client";
-
+import { ImageActions } from "./ImageActions";
+import { ImageGallery } from "./ImageGallery";
+import { ImageMetadata } from "./ImageMetadata";
+import { ImageRecognition } from "./ImageRecognition";
+import { QuickActions } from "./QuickActions";
 import { useKingdom } from "@/src/context/KingdomContext";
 
+function Field({
+  label,
+  value,
+}: {
+  label: string;
+  value: string | number | undefined;
+}) {
+  return (
+    <div>
+      <div className="text-xs uppercase tracking-widest muted-text">
+        {label}
+      </div>
+
+      <div className="mt-1 text-white">
+        {value || "—"}
+      </div>
+    </div>
+  );
+}
+
 export function ItemDetails() {
-  const { selectedItem } = useKingdom();
+  const { selectedItem, activeCollection } = useKingdom();
 
   if (!selectedItem) {
     return (
-      <aside className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-6">
-        <h2 className="text-xl font-semibold gold-text">
-          Treasure Details
-        </h2>
-
-        <div className="mt-8 flex aspect-square items-center justify-center rounded-xl border border-dashed border-amber-500/20">
-          <div className="text-center">
-            <p className="text-lg text-white">
-              No Treasure Selected
-            </p>
-
-            <p className="mt-2 muted-text">
-              Select a collectible from the Royal Vault.
-            </p>
+      <aside className="space-y-6">
+        <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-6">
+          <div className="text-xs uppercase tracking-[0.35em] gold-text">
+            {activeCollection}
           </div>
-        </div>
+
+          <h2 className="mt-2 text-2xl font-semibold text-white">
+            Treasure Details
+          </h2>
+
+          <div className="mt-8 flex h-80 items-center justify-center rounded-xl border border-dashed border-amber-500/20">
+            <div className="text-center">
+              <div className="text-lg font-semibold text-white">
+                Nothing Selected
+              </div>
+
+              <p className="mt-2 muted-text">
+                Select a collectible to inspect it.
+              </p>
+            </div>
+          </div>
+        </section>
+<ImageGallery />
+
+<ImageActions />
+
+<ImageMetadata />
+
+<ImageRecognition />
+        <QuickActions />
       </aside>
     );
   }
 
   return (
-    <aside className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-6">
-      <h2 className="text-xl font-semibold gold-text">
-        Treasure Details
-      </h2>
+    <aside className="space-y-6">
+      <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-6">
+        <div className="text-xs uppercase tracking-[0.35em] gold-text">
+          {activeCollection}
+        </div>
 
-      <div className="mt-6 aspect-square rounded-xl border border-amber-500/20 bg-stone-800 flex items-center justify-center">
-        <span className="muted-text">
+        <h2 className="mt-2 text-2xl font-semibold text-white">
+          {selectedItem.title}
+        </h2>
+
+        <div className="mt-6 aspect-square rounded-xl border border-amber-500/20 bg-stone-800 flex items-center justify-center">
           Image Placeholder
-        </span>
-      </div>
-
-      <div className="mt-8 space-y-6">
-        <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
-            Title
-          </div>
-
-          <div className="mt-1 text-xl font-semibold text-white">
-            {selectedItem.title}
-          </div>
         </div>
 
-        <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
-            Category
-          </div>
-
-          <div className="mt-1">
-            {selectedItem.category}
-          </div>
+        <div className="mt-8 grid gap-5">
+          <Field label="Brand" value={selectedItem.brand} />
+          <Field label="Series" value={selectedItem.series} />
+          <Field label="Set" value={selectedItem.set} />
+          <Field label="Card Number" value={selectedItem.cardNumber} />
+          <Field label="Player" value={selectedItem.player} />
+          <Field label="Year" value={selectedItem.year} />
+          <Field label="Grade" value={selectedItem.grade} />
+          <Field
+            label="Grading Company"
+            value={selectedItem.gradingCompany}
+          />
+          <Field
+            label="Certification"
+            value={selectedItem.certificationNumber}
+          />
+          <Field
+            label="Purchase Price"
+            value={
+              selectedItem.purchasePrice
+                ? `$${selectedItem.purchasePrice.toLocaleString()}`
+                : undefined
+            }
+          />
+          <Field
+            label="Estimated Value"
+            value={`$${selectedItem.estimatedValue.toLocaleString()}`}
+          />
+          <Field
+            label="Storage"
+            value={selectedItem.storageLocation}
+          />
         </div>
+      </section>
 
-        <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
-            Manufacturer
-          </div>
-
-          <div className="mt-1">
-            {selectedItem.manufacturer}
-          </div>
-        </div>
-
-        <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
-            Estimated Value
-          </div>
-
-          <div className="mt-1 text-2xl font-semibold gold-text">
-            ${selectedItem.estimatedValue.toLocaleString()}
-          </div>
-        </div>
-
-        <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
-            Year
-          </div>
-
-          <div className="mt-1">
-            {selectedItem.year}
-          </div>
-        </div>
-
-        <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
-            Notes
-          </div>
-
-          <div className="mt-1 rounded-lg border border-amber-500/20 bg-stone-800 p-3">
-            {selectedItem.notes || "No notes available."}
-          </div>
-        </div>
-      </div>
+      <QuickActions />
     </aside>
   );
 }

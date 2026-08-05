@@ -8,19 +8,9 @@ export function AddCollectibleButton({
   return (
     <button
       onClick={onClick}
-      className="
-        kingdom-hover
-        rounded-xl
-        border
-        border-amber-500/30
-        bg-amber-500/10
-        px-5
-        py-3
-        font-semibold
-        text-white
-      "
+      className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-black transition hover:bg-amber-400"
     >
-      ➕ Add Collectible
+      + Add Collectible
     </button>
   );
 }

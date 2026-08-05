@@ -1,4 +1,5 @@
 import { kingdomStore } from "@/src/lib/kingdom-store";
+
 import { HeaderAction } from "../common/HeaderAction";
 
 export function KingdomHeader() {
@@ -25,6 +26,11 @@ export function KingdomHeader() {
         <HeaderAction
           icon="🔔"
           label="Alerts"
+        />
+
+        <HeaderAction
+          icon="➕"
+          label="Add"
         />
 
         <div className="flex items-center gap-4 border-l border-amber-500/20 pl-4">
