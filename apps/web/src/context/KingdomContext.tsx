@@ -7,13 +7,19 @@ import {
   useMemo,
   useState,
 } from "react";
+
 import { database } from "@kings/database";
+
 import {
   CollectibleItem,
   VaultService,
 } from "@kings/core";
 
-import { InMemoryVaultRepository } from "@kings/database";
+import {
+  SortOption,
+  VaultFilter,
+  defaultVaultFilter,
+} from "@kings/search";
 
 import {
   defaultKeeperState,
@@ -39,6 +45,18 @@ type KingdomContextValue = {
     collection: string
   ) => void;
 
+  sortOption: SortOption;
+
+  setSortOption: (
+    option: SortOption
+  ) => void;
+
+  filter: VaultFilter;
+
+  setFilter: (
+    filter: VaultFilter
+  ) => void;
+
   refresh: () => void;
 };
 
@@ -52,7 +70,8 @@ export function KingdomProvider({
 }: {
   children: ReactNode;
 }) {
-  const [version, setVersion] = useState(0);
+  const [version, setVersion] =
+    useState(0);
 
   const repository = useMemo(
     () => database.vault,
@@ -68,10 +87,22 @@ export function KingdomProvider({
     useState(defaultKeeperState);
 
   const [selectedItem, setSelectedItem] =
-    useState<CollectibleItem | null>(null);
+    useState<CollectibleItem | null>(
+      null
+    );
 
-  const [activeCollection, setActiveCollection] =
-    useState("All");
+  const [
+    activeCollection,
+    setActiveCollection,
+  ] = useState("All");
+
+  const [sortOption, setSortOption] =
+    useState<SortOption>("newest");
+
+  const [filter, setFilter] =
+    useState<VaultFilter>(
+      defaultVaultFilter
+    );
 
   const refresh = () =>
     setVersion((v) => v + 1);
@@ -88,6 +119,10 @@ export function KingdomProvider({
         setSelectedItem,
         activeCollection,
         setActiveCollection,
+        sortOption,
+        setSortOption,
+        filter,
+        setFilter,
         refresh,
       }}
     >
@@ -97,7 +132,8 @@ export function KingdomProvider({
 }
 
 export function useKingdom() {
-  const context = useContext(KingdomContext);
+  const context =
+    useContext(KingdomContext);
 
   if (!context) {
     throw new Error(

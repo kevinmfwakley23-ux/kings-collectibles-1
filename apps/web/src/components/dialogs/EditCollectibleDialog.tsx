@@ -1,35 +1,41 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { CollectibleFactory } from "@kings/core";
+import { CollectibleItem } from "@kings/core";
 
 type Props = {
   open: boolean;
-  onClose: () => void;
-  onSave: (
-    collectible: ReturnType<
-      typeof CollectibleFactory.create
-    >
-  ) => void;
+  item: CollectibleItem | null;
+  onCancel: () => void;
+  onSave: (item: CollectibleItem) => void;
 };
 
-export function AddCollectibleDialog({
+export function EditCollectibleDialog({
   open,
-  onClose,
+  item,
+  onCancel,
   onSave,
 }: Props) {
   const [title, setTitle] = useState("");
 
   const [brand, setBrand] = useState("");
 
-  if (!open) return null;
+  useEffect(() => {
+    if (!item) return;
+
+    setTitle(item.title);
+
+    setBrand(item.brand ?? "");
+  }, [item]);
+
+  if (!open || !item) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
       <div className="w-full max-w-xl rounded-2xl border border-amber-500/20 bg-stone-900 p-8">
         <h2 className="text-3xl font-bold gold-text">
-          Add Collectible
+          Edit Collectible
         </h2>
 
         <div className="mt-8 space-y-4">
@@ -38,7 +44,6 @@ export function AddCollectibleDialog({
             onChange={(e) =>
               setTitle(e.target.value)
             }
-            placeholder="Title"
             className="w-full rounded-xl border border-stone-700 bg-stone-800 px-4 py-3"
           />
 
@@ -47,36 +52,29 @@ export function AddCollectibleDialog({
             onChange={(e) =>
               setBrand(e.target.value)
             }
-            placeholder="Brand"
             className="w-full rounded-xl border border-stone-700 bg-stone-800 px-4 py-3"
           />
         </div>
 
         <div className="mt-8 flex justify-end gap-3">
           <button
-            onClick={onClose}
+            onClick={onCancel}
             className="rounded-xl border border-stone-700 px-5 py-3"
           >
             Cancel
           </button>
 
           <button
-            onClick={() => {
-              if (!title.trim()) return;
-
-              onSave(
-                CollectibleFactory.create({
-                  title,
-                  brand,
-                })
-              );
-
-              setTitle("");
-              setBrand("");
-            }}
+            onClick={() =>
+              onSave({
+                ...item,
+                title,
+                brand,
+              })
+            }
             className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-black"
           >
-            Save Collectible
+            Save Changes
           </button>
         </div>
       </div>

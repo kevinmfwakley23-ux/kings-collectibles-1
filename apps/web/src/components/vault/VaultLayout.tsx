@@ -12,13 +12,13 @@ import { RoyalVaultToolbar } from "./workspace/RoyalVaultToolbar";
 import { VaultWorkspace } from "./workspace/VaultWorkspace";
 
 export function VaultLayout() {
-  const [dialogOpen, setDialogOpen] =
-    useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const {
     vault,
     refresh,
     setKeeper,
+    setSelectedItem,
   } = useKingdom();
 
   return (
@@ -45,59 +45,17 @@ export function VaultLayout() {
       <AddCollectibleDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
-        onSave={(item) => {
-          vault.addItem({
-            id: crypto.randomUUID(),
+        onSave={(collectible) => {
+          vault.addItem(collectible);
 
-            collectionId: "default",
-
-            category: "Trading Card",
-
-            rookie: false,
-
-            autograph: false,
-
-            memorabilia: false,
-
-            quantity: 1,
-
-            tags: [],
-
-            images: [],
-
-            favorite: false,
-
-            language: "English",
-
-            variation: "",
-
-            parallel: "",
-
-            certificationNumber: "",
-
-            storageLocation: "",
-
-            purchaseSource: "",
-
-            acquiredOn: new Date(),
-
-            lastValuation: new Date(),
-
-            condition: "",
-
-            grade: "",
-
-            gradingCompany: "",
-
-            ...item,
-          });
-
-          refresh();
+          setSelectedItem(collectible);
 
           setKeeper({
             mood: "celebrating",
-            message: `"${item.title}" added to the Royal Vault.`,
+            message: `"${collectible.title}" has joined your Royal Vault.`,
           });
+
+          refresh();
 
           setDialogOpen(false);
         }}

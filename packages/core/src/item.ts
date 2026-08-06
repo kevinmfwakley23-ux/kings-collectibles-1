@@ -23,19 +23,19 @@ export interface CollectibleItem {
 
   team?: string;
 
+  character?: string;
+
+  franchise?: string;
+
   year?: number;
 
   language?: string;
 
   variation?: string;
 
-  parallel?: string;
+  printRun?: string;
 
-  rookie: boolean;
-
-  autograph: boolean;
-
-  memorabilia: boolean;
+  condition?: string;
 
   gradingCompany?: string;
 
@@ -43,27 +43,29 @@ export interface CollectibleItem {
 
   certificationNumber?: string;
 
-  condition?: string;
-
   estimatedValue: number;
 
   purchasePrice?: number;
 
-  purchaseSource?: string;
-
   acquiredOn?: Date;
-
-  quantity: number;
 
   storageLocation?: string;
 
-  lastValuation?: Date;
+  notes?: string;
 
   tags: string[];
 
-  notes?: string;
+  imageIds: string[];
 
-  images: string[];
+  rookie: boolean;
+
+  autograph: boolean;
+
+  memorabilia: boolean;
 
   favorite: boolean;
+
+  createdAt: Date;
+
+  updatedAt: Date;
 }

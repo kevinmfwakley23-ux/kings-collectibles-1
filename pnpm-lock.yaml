@@ -31,6 +31,9 @@ importers:
       '@kings/keeper':
         specifier: workspace:*
         version: link:../../packages/keeper
+      '@kings/search':
+        specifier: workspace:*
+        version: link:../../packages/search
       next:
         specifier: 16.2.12
         version: 16.2.12(@babel/core@7.29.7(supports-color@7.2.0))(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -80,7 +83,11 @@ importers:
 
   packages/keeper: {}
 
-  packages/search: {}
+  packages/search:
+    dependencies:
+      '@kings/core':
+        specifier: workspace:*
+        version: link:../core
 
   packages/shared: {}
 

@@ -1,55 +1,57 @@
 "use client";
 
-import { CollectionBreakdown } from "./CollectionBreakdown";
-import { CollectionInsights } from "./CollectionInsights";
-import { CollectionProgress } from "./CollectionProgress";
-import { CollectionStats } from "./CollectionStats";
-import { CollectionTags } from "./CollectionTags";
-import { CollectionValueChart } from "./CollectionValueChart";
+import { useMemo } from "react";
+
+import {
+  FilterService,
+  SearchService,
+} from "@kings/search";
+
+import { useKingdom } from "@/src/context/KingdomContext";
+
 import { CollectionsPanel } from "./CollectionsPanel";
-import { CollectorProfile } from "./CollectorProfile";
-import { FavoritesPanel } from "./FavoritesPanel";
-import { GradingSummary } from "./GradingSummary";
 import { ItemDetails } from "./ItemDetails";
-import { KeeperAdvice } from "./KeeperAdvice";
-import { RecentActivity } from "./RecentActivity";
 import { RoyalVaultSearch } from "./RoyalVaultSearch";
-import { TopValuableItems } from "./TopValuableItems";
 import { VaultGrid } from "./VaultGrid";
-import { VaultHealth } from "./VaultHealth";
-import { VaultMetrics } from "./VaultMetrics";
-import { VaultSummaryCard } from "./VaultSummaryCard";
 
 export function VaultWorkspace() {
+  const {
+    filter,
+    setFilter,
+  } = useKingdom();
+
+  const searchService = useMemo(
+    () => new SearchService(),
+    []
+  );
+
+  const filterService = useMemo(
+    () => new FilterService(),
+    []
+  );
+
   return (
-    <section className="grid gap-6 xl:grid-cols-[280px_1fr_360px]">
-      <section className="space-y-6">
-        <VaultSummaryCard />
-        <CollectorProfile />
-        <CollectionProgress />
-        <CollectionsPanel />
-        <CollectionBreakdown />
-        <CollectionTags />
-        <VaultHealth />
-      </section>
+    <section className="grid gap-6 xl:grid-cols-[260px_1fr_340px]">
+      <CollectionsPanel />
 
-      <section className="space-y-6">
-        <CollectionStats />
-        <CollectionValueChart />
-        <RoyalVaultSearch />
-        <VaultGrid />
-      </section>
+      <div className="space-y-6">
+        <RoyalVaultSearch
+          value={filter.search}
+          onChange={(search) =>
+            setFilter({
+              ...filter,
+              search,
+            })
+          }
+        />
 
-      <section className="space-y-6">
-        <ItemDetails />
-        <KeeperAdvice />
-        <GradingSummary />
-        <VaultMetrics />
-        <FavoritesPanel />
-        <TopValuableItems />
-        <RecentActivity />
-        <CollectionInsights />
-      </section>
+        <VaultGrid
+          searchService={searchService}
+          filterService={filterService}
+        />
+      </div>
+
+      <ItemDetails />
     </section>
   );
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { StatisticsService } from "@kings/search";
 import { useMemo } from "react";
 
 import { useKingdom } from "@/src/context/KingdomContext";
@@ -7,13 +8,15 @@ import { useKingdom } from "@/src/context/KingdomContext";
 export function FavoritesPanel() {
   const { vault } = useKingdom();
 
-  const favorites = useMemo(
-    () =>
-      vault
-        .getItems()
-        .filter((i) => i.favorite),
-    [vault]
+  const statistics = useMemo(
+    () => new StatisticsService(),
+    []
   );
+
+  const items = vault.getItems();
+
+  const favoriteCount =
+    statistics.favoriteItems(items);
 
   return (
     <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-5">
@@ -21,15 +24,12 @@ export function FavoritesPanel() {
         Favorites
       </h3>
 
-      <div className="mt-5 space-y-2">
-        {favorites.map((item) => (
-          <div
-            key={item.id}
-            className="rounded-lg border border-stone-700 bg-stone-800 p-3"
-          >
-            {item.title}
-          </div>
-        ))}
+      <div className="mt-4 text-5xl font-bold gold-text">
+        {favoriteCount}
+      </div>
+
+      <div className="mt-4 text-sm muted-text">
+        Favorite collectibles
       </div>
     </section>
   );

@@ -1,35 +1,40 @@
 "use client";
 
-import { useMemo } from "react";
-
 import { useKingdom } from "@/src/context/KingdomContext";
 
 export function CollectionProgress() {
   const { vault } = useKingdom();
 
-  const progress = useMemo(() => {
-    const items = vault.getItems().length;
+  const items = vault.getItems();
 
-    return Math.min((items / 100) * 100, 100);
-  }, [vault]);
+  const target = 1000;
+
+  const percent = Math.min(
+    (items.length / target) * 100,
+    100
+  );
 
   return (
     <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-5">
       <h3 className="text-lg font-semibold gold-text">
-        Kingdom Progress
+        Collection Goal
       </h3>
 
-      <div className="mt-6 h-4 rounded-full bg-stone-800">
+      <div className="mt-6 h-3 overflow-hidden rounded-full bg-stone-800">
         <div
-          className="h-4 rounded-full bg-amber-400"
+          className="h-full bg-amber-500 transition-all"
           style={{
-            width: `${progress}%`,
+            width: `${percent}%`,
           }}
         />
       </div>
 
-      <div className="mt-3 text-sm muted-text">
-        {progress.toFixed(0)}% toward the first 100 collectibles
+      <div className="mt-4 flex items-center justify-between text-sm muted-text">
+        <span>
+          {items.length} / {target} collectibles
+        </span>
+
+        <span>{percent.toFixed(0)}%</span>
       </div>
     </section>
   );

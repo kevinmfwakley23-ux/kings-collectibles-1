@@ -1,12 +1,18 @@
+import { database } from "@kings/database";
+
 import {
-  VaultService,
   defaultCollector,
+  VaultService,
 } from "@kings/core";
 
 class KingdomStore {
-  readonly vault = new VaultService();
+  readonly vault = new VaultService(
+    database.vault
+  );
 
-  readonly collector = defaultCollector;
+  readonly collector =
+    defaultCollector;
 }
 
-export const kingdomStore = new KingdomStore();
+export const kingdomStore =
+  new KingdomStore();

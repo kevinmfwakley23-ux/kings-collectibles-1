@@ -1,22 +1,33 @@
 "use client";
 
 import { useMemo } from "react";
+
 import { useKingdom } from "@/src/context/KingdomContext";
 
 export function CollectionBreakdown() {
   const { vault } = useKingdom();
 
-  const rows = useMemo(() => {
-    const counts = new Map<string, number>();
+  const collections = useMemo(() => {
+    const map = new Map<
+      string,
+      { count: number; value: number }
+    >();
 
     for (const item of vault.getItems()) {
-      counts.set(
-        item.category,
-        (counts.get(item.category) ?? 0) + 1
-      );
+      const current = map.get(item.collectionId) ?? {
+        count: 0,
+        value: 0,
+      };
+
+      current.count += 1;
+      current.value += item.estimatedValue;
+
+      map.set(item.collectionId, current);
     }
 
-    return [...counts.entries()];
+    return [...map.entries()].sort(
+      (a, b) => b[1].value - a[1].value
+    );
   }, [vault]);
 
   return (
@@ -26,16 +37,24 @@ export function CollectionBreakdown() {
       </h3>
 
       <div className="mt-5 space-y-3">
-        {rows.map(([name, count]) => (
+        {collections.map(([name, data]) => (
           <div
             key={name}
-            className="flex justify-between"
+            className="rounded-lg border border-stone-700 bg-stone-800 p-3"
           >
-            <span>{name}</span>
+            <div className="flex justify-between">
+              <span className="font-medium text-white">
+                {name}
+              </span>
 
-            <span className="gold-text">
-              {count}
-            </span>
+              <span className="gold-text">
+                ${data.value.toLocaleString()}
+              </span>
+            </div>
+
+            <div className="mt-1 text-sm muted-text">
+              {data.count} collectibles
+            </div>
           </div>
         ))}
       </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { CollectionAnalyticsService } from "@kings/search";
 import { useMemo } from "react";
 
 import { useKingdom } from "@/src/context/KingdomContext";
@@ -7,35 +8,32 @@ import { useKingdom } from "@/src/context/KingdomContext";
 export function VaultMetrics() {
   const { vault } = useKingdom();
 
-  const metrics = useMemo(() => {
-    const items = vault.getItems();
+  const analytics = useMemo(
+    () => new CollectionAnalyticsService(),
+    []
+  );
 
-    const average =
-      items.length === 0
-        ? 0
-        : items.reduce(
-            (sum, i) => sum + i.estimatedValue,
-            0
-          ) / items.length;
-
-    return {
-      average,
-    };
-  }, [vault]);
+  const items = vault.getItems();
 
   return (
-    <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-5">
-      <h3 className="text-lg font-semibold gold-text">
-        Vault Metrics
-      </h3>
-
-      <div className="mt-5">
-        <div className="text-sm muted-text">
-          Average Item Value
+    <section className="grid grid-cols-2 gap-4">
+      <div className="rounded-xl border border-amber-500/20 bg-stone-900/60 p-4">
+        <div className="text-xs uppercase muted-text">
+          Items
         </div>
 
-        <div className="mt-2 text-2xl font-bold gold-text">
-          ${metrics.average.toFixed(0)}
+        <div className="mt-2 text-3xl font-bold gold-text">
+          {analytics.totalItems(items)}
+        </div>
+      </div>
+
+      <div className="rounded-xl border border-amber-500/20 bg-stone-900/60 p-4">
+        <div className="text-xs uppercase muted-text">
+          Favorites
+        </div>
+
+        <div className="mt-2 text-3xl font-bold gold-text">
+          {analytics.favoriteCount(items)}
         </div>
       </div>
     </section>

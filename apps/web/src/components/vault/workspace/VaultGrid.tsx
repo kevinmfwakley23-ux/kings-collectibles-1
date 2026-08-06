@@ -1,32 +1,35 @@
 "use client";
 
-import { useMemo } from "react";
+import {
+  FilterService,
+  SearchService,
+} from "@kings/search";
 
 import { useKingdom } from "@/src/context/KingdomContext";
 
 import { RoyalVaultCard } from "./RoyalVaultCard";
 import { RoyalVaultEmpty } from "./RoyalVaultEmpty";
 
-export function VaultGrid() {
+type Props = {
+  searchService: SearchService;
+  filterService: FilterService;
+};
+
+export function VaultGrid({
+  filterService,
+}: Props) {
   const {
     vault,
+    filter,
     selectedItem,
     setSelectedItem,
     setKeeper,
-    activeCollection,
   } = useKingdom();
 
-  const items = useMemo(() => {
-    const all = vault.getItems();
-
-    if (activeCollection === "All") {
-      return all;
-    }
-
-    return all.filter(
-      (item) => item.category === activeCollection
-    );
-  }, [vault, activeCollection]);
+  const items = filterService.apply(
+    vault.getItems(),
+    filter
+  );
 
   if (items.length === 0) {
     return <RoyalVaultEmpty />;
@@ -35,15 +38,13 @@ export function VaultGrid() {
   return (
     <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-6">
       <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h2 className="text-xl font-semibold gold-text">
-            {activeCollection}
-          </h2>
+        <h2 className="text-xl font-semibold gold-text">
+          Royal Vault
+        </h2>
 
-          <p className="mt-1 text-sm muted-text">
-            {items.length} collectible{items.length !== 1 ? "s" : ""}
-          </p>
-        </div>
+        <span className="rounded-lg border border-amber-500/20 px-3 py-1 text-sm muted-text">
+          {items.length} Collectibles
+        </span>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
@@ -51,7 +52,9 @@ export function VaultGrid() {
           <RoyalVaultCard
             key={item.id}
             item={item}
-            selected={selectedItem?.id === item.id}
+            selected={
+              selectedItem?.id === item.id
+            }
             onSelect={() => {
               setSelectedItem(item);
 

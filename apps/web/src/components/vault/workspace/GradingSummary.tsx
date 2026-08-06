@@ -7,17 +7,15 @@ import { useKingdom } from "@/src/context/KingdomContext";
 export function GradingSummary() {
   const { vault } = useKingdom();
 
-  const stats = useMemo(() => {
-    const items = vault.getItems();
+  const summary = useMemo(() => {
+    const graded = vault
+      .getItems()
+      .filter((i) => !!i.grade).length;
 
-    return {
-      graded: items.filter(
-        (i) => i.gradingCompany
-      ).length,
-      raw: items.filter(
-        (i) => !i.gradingCompany
-      ).length,
-    };
+    const raw =
+      vault.getItems().length - graded;
+
+    return { graded, raw };
   }, [vault]);
 
   return (
@@ -26,19 +24,25 @@ export function GradingSummary() {
         Grading Summary
       </h3>
 
-      <div className="mt-5 space-y-3">
-        <div className="flex justify-between">
-          <span>Graded</span>
-          <span className="gold-text">
-            {stats.graded}
-          </span>
+      <div className="mt-6 grid grid-cols-2 gap-5">
+        <div>
+          <div className="text-xs uppercase muted-text">
+            Graded
+          </div>
+
+          <div className="mt-2 text-3xl font-bold gold-text">
+            {summary.graded}
+          </div>
         </div>
 
-        <div className="flex justify-between">
-          <span>Raw</span>
-          <span className="gold-text">
-            {stats.raw}
-          </span>
+        <div>
+          <div className="text-xs uppercase muted-text">
+            Raw
+          </div>
+
+          <div className="mt-2 text-3xl font-bold text-white">
+            {summary.raw}
+          </div>
         </div>
       </div>
     </section>

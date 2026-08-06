@@ -2,30 +2,29 @@
 
 import { useMemo } from "react";
 
+import { CollectionAnalyticsService } from "@kings/search";
+
 import { useKingdom } from "@/src/context/KingdomContext";
 
 export function CollectionStats() {
-  const { vault, activeCollection } = useKingdom();
+  const {
+    vault,
+    activeCollection,
+  } = useKingdom();
 
-  const stats = useMemo(() => {
-    const items = vault
-      .getItems()
-      .filter(
-        (item) =>
-          activeCollection === "All" ||
-          item.category === activeCollection
-      );
+  const analytics = useMemo(
+    () => new CollectionAnalyticsService(),
+    []
+  );
 
-    const value = items.reduce(
-      (sum, item) => sum + item.estimatedValue,
-      0
+  const items = vault
+    .getItems()
+    .filter(
+      (item) =>
+        activeCollection === "All" ||
+        item.collectionId ===
+          activeCollection
     );
-
-    return {
-      count: items.length,
-      value,
-    };
-  }, [vault, activeCollection]);
 
   return (
     <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-5">
@@ -33,28 +32,50 @@ export function CollectionStats() {
         Collection Statistics
       </h3>
 
-      <div className="mt-1 text-sm muted-text">
-        Current Collection
-      </div>
-
-      <div className="mt-6 grid grid-cols-2 gap-5">
+      <div className="mt-6 grid grid-cols-2 gap-6">
         <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
+          <div className="text-xs uppercase muted-text">
             Items
           </div>
 
           <div className="mt-2 text-3xl font-bold gold-text">
-            {stats.count}
+            {analytics.totalItems(items)}
           </div>
         </div>
 
         <div>
-          <div className="text-xs uppercase tracking-widest muted-text">
-            Value
+          <div className="text-xs uppercase muted-text">
+            Favorites
           </div>
 
           <div className="mt-2 text-3xl font-bold gold-text">
-            ${stats.value.toLocaleString()}
+            {analytics.favoriteCount(items)}
+          </div>
+        </div>
+
+        <div>
+          <div className="text-xs uppercase muted-text">
+            Total Value
+          </div>
+
+          <div className="mt-2 text-2xl font-bold text-white">
+            $
+            {analytics
+              .totalValue(items)
+              .toLocaleString()}
+          </div>
+        </div>
+
+        <div>
+          <div className="text-xs uppercase muted-text">
+            Average
+          </div>
+
+          <div className="mt-2 text-2xl font-bold text-white">
+            $
+            {analytics
+              .averageValue(items)
+              .toFixed(0)}
           </div>
         </div>
       </div>

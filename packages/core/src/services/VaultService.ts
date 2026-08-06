@@ -12,23 +12,38 @@ export class VaultService {
     return this.repository.getAll();
   }
 
-  getAll(): CollectibleItem[] {
-    return this.repository.getAll();
-  }
-
   getItem(id: string) {
     return this.repository.getById(id);
   }
 
-  get(id: string) {
-    return this.repository.getById(id);
+  getSummary() {
+    const items = this.getItems();
+
+    const totalEstimatedValue = items.reduce(
+      (sum, item) => sum + item.estimatedValue,
+      0
+    );
+
+    const favoriteItems = items.filter(
+      (item) => item.favorite
+    ).length;
+
+    const totalCollections = new Set(
+      items.map(
+        (item) =>
+          item.collectionId ?? "Uncategorized"
+      )
+    ).size;
+
+    return {
+      totalItems: items.length,
+      totalCollections,
+      favoriteItems,
+      totalEstimatedValue,
+    };
   }
 
   addItem(item: CollectibleItem) {
-    this.repository.save(item);
-  }
-
-  save(item: CollectibleItem) {
     this.repository.save(item);
   }
 
@@ -36,16 +51,21 @@ export class VaultService {
     this.repository.update(item);
   }
 
-  update(item: CollectibleItem) {
-    this.repository.update(item);
-  }
-
-  deleteItem(id: string) {
+  removeItem(id: string) {
     this.repository.delete(id);
   }
 
-  delete(id: string) {
-    this.repository.delete(id);
+  toggleFavorite(id: string) {
+    const item = this.repository.getById(id);
+
+    if (!item) {
+      return;
+    }
+
+    this.repository.update({
+      ...item,
+      favorite: !item.favorite,
+    });
   }
 
   clear() {

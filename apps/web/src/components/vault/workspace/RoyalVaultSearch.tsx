@@ -2,33 +2,41 @@
 
 import { useState } from "react";
 
-import { useKingdom } from "@/src/context/KingdomContext";
+type Props = {
+  value?: string;
+  onChange?: (value: string) => void;
+};
 
-export function RoyalVaultSearch() {
-  const { setKeeper } = useKingdom();
+export function RoyalVaultSearch({
+  value = "",
+  onChange,
+}: Props) {
+  const [internalValue, setInternalValue] =
+    useState(value);
 
-  const [value, setValue] = useState("");
+  const current =
+    onChange === undefined
+      ? internalValue
+      : value;
+
+  function update(next: string) {
+    if (onChange) {
+      onChange(next);
+    } else {
+      setInternalValue(next);
+    }
+  }
 
   return (
-    <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-4">
+    <section className="rounded-2xl border border-amber-500/20 bg-stone-900/60 p-5">
       <input
-        type="text"
-        value={value}
-        placeholder="Search the Royal Vault..."
-        onChange={(event) => {
-          const text = event.target.value;
-
-          setValue(text);
-
-          setKeeper({
-            mood: "watching",
-            message:
-              text.length === 0
-                ? "Standing watch over the Royal Vault."
-                : `Searching for "${text}".`,
-          });
-        }}
-        className="w-full rounded-xl border border-stone-700 bg-stone-800 px-4 py-3 outline-none transition focus:border-amber-400"
+        type="search"
+        value={current}
+        onChange={(e) =>
+          update(e.target.value)
+        }
+        placeholder="Search your Kingdom..."
+        className="w-full rounded-xl border border-stone-700 bg-stone-800 px-4 py-3 outline-none focus:border-amber-400"
       />
     </section>
   );
