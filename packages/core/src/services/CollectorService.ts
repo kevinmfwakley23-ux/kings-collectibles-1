@@ -1,4 +1,4 @@
-import { CollectibleItem } from "../item";
+import type { CollectibleItem } from "../item";
 
 export class CollectorService {
   totalItems(
@@ -15,7 +15,7 @@ export class CollectorService {
     ).length;
   }
 
-  totalValue(
+  collectionValue(
     items: CollectibleItem[]
   ) {
     return items.reduce(
@@ -25,15 +25,19 @@ export class CollectorService {
     );
   }
 
+  totalValue(
+    items: CollectibleItem[]
+  ) {
+    return this.collectionValue(items);
+  }
+
   averageValue(
     items: CollectibleItem[]
   ) {
-    if (items.length === 0) {
-      return 0;
-    }
+    if (!items.length) return 0;
 
     return (
-      this.totalValue(items) /
+      this.collectionValue(items) /
       items.length
     );
   }
@@ -41,14 +45,20 @@ export class CollectorService {
   highestValueItem(
     items: CollectibleItem[]
   ) {
-    if (items.length === 0) {
-      return null;
-    }
-
     return [...items].sort(
       (a, b) =>
         b.estimatedValue -
         a.estimatedValue
-    )[0];
+    )[0] ?? null;
+  }
+
+  lowestValueItem(
+    items: CollectibleItem[]
+  ) {
+    return [...items].sort(
+      (a, b) =>
+        a.estimatedValue -
+        b.estimatedValue
+    )[0] ?? null;
   }
 }

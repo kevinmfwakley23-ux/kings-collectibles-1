@@ -22,6 +22,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@kings/auth':
+        specifier: workspace:*
+        version: link:../../packages/auth
       '@kings/core':
         specifier: workspace:*
         version: link:../../packages/core

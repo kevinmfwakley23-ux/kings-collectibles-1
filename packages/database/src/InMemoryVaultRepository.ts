@@ -1,4 +1,4 @@
-import {
+import type {
   CollectibleItem,
   VaultRepository,
 } from "@kings/core";

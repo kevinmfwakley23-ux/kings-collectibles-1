@@ -5,6 +5,7 @@ export * from "./authorization";
 export * from "./constants";
 export * from "./errors";
 export * from "./identity";
+export * from "./identity-provider";
 export * from "./mfa-provider";
 export * from "./password-policy";
 export * from "./password-validator";

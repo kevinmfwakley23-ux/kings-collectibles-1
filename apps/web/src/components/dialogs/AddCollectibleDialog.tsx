@@ -23,7 +23,15 @@ export function AddCollectibleDialog({
 
   const [brand, setBrand] = useState("");
 
-  if (!open) return null;
+  const closeDialog = () => {
+    setTitle("");
+    setBrand("");
+    onClose();
+  };
+
+  if (!open) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
@@ -34,6 +42,7 @@ export function AddCollectibleDialog({
 
         <div className="mt-8 space-y-4">
           <input
+            autoFocus
             value={title}
             onChange={(e) =>
               setTitle(e.target.value)
@@ -54,27 +63,27 @@ export function AddCollectibleDialog({
 
         <div className="mt-8 flex justify-end gap-3">
           <button
-            onClick={onClose}
+            type="button"
+            onClick={closeDialog}
             className="rounded-xl border border-stone-700 px-5 py-3"
           >
             Cancel
           </button>
 
           <button
+            type="button"
+            disabled={!title.trim()}
             onClick={() => {
-              if (!title.trim()) return;
-
               onSave(
                 CollectibleFactory.create({
-                  title,
-                  brand,
+                  title: title.trim(),
+                  brand: brand.trim(),
                 })
               );
 
-              setTitle("");
-              setBrand("");
+              closeDialog();
             }}
-            className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-black"
+            className="rounded-xl bg-amber-500 px-5 py-3 font-semibold text-black transition hover:bg-amber-400 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Save Collectible
           </button>

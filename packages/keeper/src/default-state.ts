@@ -1,4 +1,4 @@
-import { KeeperState } from "./types";
+import type { KeeperState } from "./types";
 
 export const defaultKeeperState: KeeperState = {
   mood: "ready",

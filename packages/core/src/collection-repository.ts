@@ -1,4 +1,4 @@
-import { Collection } from "./collection";
+import type { Collection } from "./collection";
 
 export class CollectionRepository {
   private readonly collections: Collection[] = [

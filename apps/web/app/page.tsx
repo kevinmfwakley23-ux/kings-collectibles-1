@@ -1,5 +1,5 @@
-import { KingdomLayout } from "@/src/components/kingdom";
+import { AuthenticatedKingdomShell } from "@/src/components/auth/AuthenticatedKingdomShell";
 
 export default function Home() {
-  return <KingdomLayout />;
+  return <AuthenticatedKingdomShell />;
 }

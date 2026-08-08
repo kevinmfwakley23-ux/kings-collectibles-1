@@ -1,4 +1,4 @@
-import { StorageEngine } from "./StorageEngine";
+import type { StorageEngine } from "./StorageEngine";
 
 export class BrowserStorageEngine
   implements StorageEngine

@@ -1,5 +1,20 @@
 {
   "name": "@kings/api",
   "private": true,
-  "version": "0.1.0"
+  "version": "0.1.0",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "lint": "tsc --noEmit",
+    "test": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@kings/auth": "workspace:*",
+    "@kings/core": "workspace:*",
+    "@kings/database": "workspace:*",
+    "@kings/keeper": "workspace:*",
+    "@kings/search": "workspace:*"
+  }
 }

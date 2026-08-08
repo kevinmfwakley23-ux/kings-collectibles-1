@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "./globals.css";
 
+import { AuthenticationRouteGate } from "@/src/components/auth/AuthenticationRouteGate";
+import { AuthenticationProvider } from "@/src/context/AuthenticationContext";
 import { KingdomProvider } from "@/src/context/KingdomContext";
 
 const geistSans = Geist({
@@ -31,9 +33,13 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-stone-950">
-        <KingdomProvider>
-          {children}
-        </KingdomProvider>
+        <AuthenticationProvider>
+          <AuthenticationRouteGate>
+            <KingdomProvider>
+              {children}
+            </KingdomProvider>
+          </AuthenticationRouteGate>
+        </AuthenticationProvider>
       </body>
     </html>
   );

@@ -1,6 +1,6 @@
-import { CollectibleItem } from "@kings/core";
+import type { CollectibleItem } from "@kings/core";
 
-import {
+import type {
   SortOption,
   VaultFilter,
 } from "./filters/VaultFilter";

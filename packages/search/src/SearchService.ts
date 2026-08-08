@@ -1,15 +1,15 @@
-import { CollectibleItem } from "@kings/core";
+import type { CollectibleItem } from "@kings/core";
 
 export class SearchService {
   search(
     items: CollectibleItem[],
     query: string
-  ): CollectibleItem[] {
-    const search = query
+  ) {
+    const text = query
       .trim()
       .toLowerCase();
 
-    if (!search) {
+    if (!text) {
       return items;
     }
 
@@ -18,13 +18,14 @@ export class SearchService {
         item.title,
         item.brand,
         item.category,
+        item.series,
         item.collectionId,
         ...(item.tags ?? []),
       ]
         .filter(Boolean)
         .join(" ")
         .toLowerCase()
-        .includes(search)
+        .includes(text)
     );
   }
 }

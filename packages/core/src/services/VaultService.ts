@@ -1,4 +1,4 @@
-import {
+import type {
   CollectibleItem,
   VaultRepository,
 } from "../index";
@@ -16,6 +16,10 @@ export class VaultService {
     return this.repository.getById(id);
   }
 
+  exists(id: string) {
+    return this.getItem(id) !== undefined;
+  }
+
   getSummary() {
     const items = this.getItems();
 
@@ -31,7 +35,8 @@ export class VaultService {
     const totalCollections = new Set(
       items.map(
         (item) =>
-          item.collectionId ?? "Uncategorized"
+          item.collectionId ??
+          "Uncategorized"
       )
     ).size;
 
@@ -55,6 +60,16 @@ export class VaultService {
     this.repository.delete(id);
   }
 
+  removeItems(ids: string[]) {
+    for (const id of ids) {
+      this.repository.delete(id);
+    }
+  }
+
+  clear() {
+    this.repository.clear();
+  }
+
   toggleFavorite(id: string) {
     const item = this.repository.getById(id);
 
@@ -65,10 +80,23 @@ export class VaultService {
     this.repository.update({
       ...item,
       favorite: !item.favorite,
+      updatedAt: new Date(),
     });
   }
 
-  clear() {
-    this.repository.clear();
+  duplicate(id: string) {
+    const item = this.repository.getById(id);
+
+    if (!item) {
+      return;
+    }
+
+    this.repository.save({
+      ...item,
+      id: crypto.randomUUID(),
+      title: `${item.title} Copy`,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
   }
 }

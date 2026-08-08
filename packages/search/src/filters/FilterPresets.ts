@@ -1,7 +1,5 @@
-import {
-  defaultVaultFilter,
-  VaultFilter,
-} from "./VaultFilter";
+import { defaultVaultFilter } from "./VaultFilter";
+import type { VaultFilter } from "./VaultFilter";
 
 export class FilterPresets {
   static all(): VaultFilter {

@@ -1,4 +1,4 @@
-import { CollectibleItem } from "@kings/core";
+import type { CollectibleItem } from "@kings/core";
 
 export class CollectionAnalyticsService {
   totalItems(
@@ -24,10 +24,7 @@ export class CollectionAnalyticsService {
       return 0;
     }
 
-    return (
-      this.totalValue(items) /
-      items.length
-    );
+    return this.totalValue(items) / items.length;
   }
 
   favoriteCount(
@@ -36,5 +33,29 @@ export class CollectionAnalyticsService {
     return items.filter(
       (item) => item.favorite
     ).length;
+  }
+
+  highestValue(
+    items: CollectibleItem[]
+  ) {
+    if (!items.length) return 0;
+
+    return Math.max(
+      ...items.map(
+        (item) => item.estimatedValue
+      )
+    );
+  }
+
+  lowestValue(
+    items: CollectibleItem[]
+  ) {
+    if (!items.length) return 0;
+
+    return Math.min(
+      ...items.map(
+        (item) => item.estimatedValue
+      )
+    );
   }
 }

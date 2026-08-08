@@ -1,4 +1,4 @@
-import { CollectibleItem } from "./item";
+import type { CollectibleItem } from "./item";
 
 export interface VaultRepository {
   getAll(): CollectibleItem[];

@@ -60,37 +60,47 @@ export function RoyalVaultToolbar({
         </select>
 
         <button
+          type="button"
           onClick={() =>
             setFilter(FilterPresets.all())
           }
-          className="rounded-xl border border-stone-700 px-4 py-3 hover:border-amber-400"
+          className="rounded-xl border border-stone-700 px-4 py-3 transition hover:border-amber-400"
         >
           All
         </button>
 
         <button
+          type="button"
           onClick={() =>
-            setFilter(FilterPresets.favorites())
+            setFilter(
+              FilterPresets.favorites()
+            )
           }
-          className="rounded-xl border border-stone-700 px-4 py-3 hover:border-amber-400"
+          className="rounded-xl border border-stone-700 px-4 py-3 transition hover:border-amber-400"
         >
           Favorites
         </button>
 
         <button
+          type="button"
           onClick={() =>
-            setFilter(FilterPresets.graded())
+            setFilter(
+              FilterPresets.graded()
+            )
           }
-          className="rounded-xl border border-stone-700 px-4 py-3 hover:border-amber-400"
+          className="rounded-xl border border-stone-700 px-4 py-3 transition hover:border-amber-400"
         >
           Graded
         </button>
 
         <button
+          type="button"
           onClick={() =>
-            setFilter(FilterPresets.raw())
+            setFilter(
+              FilterPresets.raw()
+            )
           }
-          className="rounded-xl border border-stone-700 px-4 py-3 hover:border-amber-400"
+          className="rounded-xl border border-stone-700 px-4 py-3 transition hover:border-amber-400"
         >
           Raw
         </button>

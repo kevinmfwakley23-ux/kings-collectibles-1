@@ -6,9 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "node -e \"process.exit(0)\""
   },
- "dependencies": {
+  "dependencies": {
+   "@kings/auth": "workspace:*",
    "@kings/core": "workspace:*",
    "@kings/database": "workspace:*",
    "@kings/keeper": "workspace:*",

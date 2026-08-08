@@ -1,4 +1,11 @@
-import { CollectibleItem } from "../item";
+import type { CollectibleItem } from "../item";
+
+export type CollectionSummary = {
+  id: string;
+  name: string;
+  itemCount: number;
+  estimatedValue: number;
+};
 
 export class CollectionService {
   groupByCollection(
@@ -10,15 +17,15 @@ export class CollectionService {
     >();
 
     for (const item of items) {
-      const collection =
+      const id =
         item.collectionId ??
         "Uncategorized";
 
-      if (!map.has(collection)) {
-        map.set(collection, []);
+      if (!map.has(id)) {
+        map.set(id, []);
       }
 
-      map.get(collection)!.push(item);
+      map.get(id)!.push(item);
     }
 
     return map;
@@ -26,7 +33,7 @@ export class CollectionService {
 
   getCollections(
     items: CollectibleItem[]
-  ) {
+  ): CollectionSummary[] {
     return [...this.groupByCollection(items)]
       .map(([id, items]) => ({
         id,
@@ -41,6 +48,32 @@ export class CollectionService {
       .sort((a, b) =>
         a.name.localeCompare(b.name)
       );
+  }
+
+  getCollection(
+    items: CollectibleItem[],
+    id: string
+  ) {
+    return items.filter(
+      (item) =>
+        item.collectionId === id
+    );
+  }
+
+  renameCollection(
+    items: CollectibleItem[],
+    oldId: string,
+    newId: string
+  ) {
+    return items.map((item) =>
+      item.collectionId === oldId
+        ? {
+            ...item,
+            collectionId: newId,
+            updatedAt: new Date(),
+          }
+        : item
+    );
   }
 
   totalCollections(

@@ -12,7 +12,8 @@ import { RoyalVaultToolbar } from "./workspace/RoyalVaultToolbar";
 import { VaultWorkspace } from "./workspace/VaultWorkspace";
 
 export function VaultLayout() {
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] =
+    useState(false);
 
   const {
     vault,
@@ -20,6 +21,25 @@ export function VaultLayout() {
     setKeeper,
     setSelectedItem,
   } = useKingdom();
+
+  function handleAddCollectible(
+    collectible: Parameters<
+      typeof vault.addItem
+    >[0]
+  ) {
+    vault.addItem(collectible);
+
+    setSelectedItem(collectible);
+
+    setKeeper({
+      mood: "celebrating",
+      message: `"${collectible.title}" has joined your Royal Vault.`,
+    });
+
+    refresh();
+
+    setDialogOpen(false);
+  }
 
   return (
     <main className="flex-1 overflow-auto bg-stone-950 p-10">
@@ -34,7 +54,9 @@ export function VaultLayout() {
 
       <div className="mt-8">
         <RoyalVaultToolbar
-          onAdd={() => setDialogOpen(true)}
+          onAdd={() =>
+            setDialogOpen(true)
+          }
         />
       </div>
 
@@ -44,21 +66,10 @@ export function VaultLayout() {
 
       <AddCollectibleDialog
         open={dialogOpen}
-        onClose={() => setDialogOpen(false)}
-        onSave={(collectible) => {
-          vault.addItem(collectible);
-
-          setSelectedItem(collectible);
-
-          setKeeper({
-            mood: "celebrating",
-            message: `"${collectible.title}" has joined your Royal Vault.`,
-          });
-
-          refresh();
-
-          setDialogOpen(false);
-        }}
+        onClose={() =>
+          setDialogOpen(false)
+        }
+        onSave={handleAddCollectible}
       />
     </main>
   );
